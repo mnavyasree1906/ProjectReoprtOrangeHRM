@@ -19,7 +19,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
+<!--     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.7.1</version>
@@ -31,7 +31,7 @@
       <version>5.7.1</version>
       <scope>test</scope>
     </dependency>
-    
+     -->
     <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
 <dependency>
     <groupId>io.qameta.allure</groupId>
