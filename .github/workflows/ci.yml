@@ -34,7 +34,7 @@ jobs:
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@v1
         with:
-          version: 117.0.5938.92
+          version: 131.0.6778.139 
 
 
       - name: Build with Maven
