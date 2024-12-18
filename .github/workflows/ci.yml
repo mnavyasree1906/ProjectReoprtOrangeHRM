@@ -18,6 +18,8 @@ jobs:
         with:
           distribution: 'temurin'  # Specify the Java distribution (e.g., adoptopenjdk, temurin)
           java-version: '23'  # Specify your Java version
+      - name: List files in the directory
+        run: ls -la ./OrangeHRM/orangehrm-test
 
       - name: Build with Maven
         working-directory: ProjectReoprtOrangeHRM/OrangeHRM/orangehrm-test/pom.xml
