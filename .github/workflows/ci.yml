@@ -22,8 +22,9 @@ jobs:
         run: ls -la ./OrangeHRM/orangehrm-test
 
       - name: Build with Maven
-        working-directory: ProjectReoprtOrangeHRM/OrangeHRM/orangehrm-test/pom.xml
         run: mvn clean install
+        working-directory: ./OrangeHRM/orangehrm-test
+    
       - name: Run Tests
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test
