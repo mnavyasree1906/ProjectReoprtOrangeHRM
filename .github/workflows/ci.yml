@@ -31,14 +31,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      - name: Install ChromeDriver (Hardcoded Versions)
-        run: |
-          CHROME_VERSION=117
-          DRIVER_VERSION=117.0.5938.92
-          echo "Using Chrome Version: $CHROME_VERSION and Driver Version: $DRIVER_VERSION"
-          curl -sS -o /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
-          sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          version: 117.0.5938.92
 
 
       - name: Build with Maven
