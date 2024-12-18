@@ -26,6 +26,6 @@ jobs:
         run: mvn clean install
         working-directory: ./OrangeHRM/orangehrm-test
 
-      - name: Run Tests
+      - name: Run TestNG tests using testng.xml
         working-directory: ./OrangeHRM/orangehrm-test
-        run: mvn test
+        run: mvn test -DsuiteXmlFile=testng.xml
