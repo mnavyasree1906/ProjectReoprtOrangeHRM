@@ -29,3 +29,7 @@ jobs:
       - name: Run TestNG tests using testng.xml
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test -DsuiteXmlFile=src/test/resources/testng.xml
+
+      - name: Display Surefire reports
+        run: cat target/surefire-reports/*.txt
+
