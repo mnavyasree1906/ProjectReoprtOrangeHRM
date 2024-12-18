@@ -16,16 +16,16 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'  # Specify the Java distribution (e.g., adoptopenjdk, temurin)
-          java-version: '23'  # Specify your Java version
+          distribution: 'temurin'
+          java-version: '23'
+
       - name: List files in the directory
         run: ls -la ./OrangeHRM/orangehrm-test
 
       - name: Build with Maven
         run: mvn clean install
         working-directory: ./OrangeHRM/orangehrm-test
-    
+
       - name: Run Tests
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test
-
