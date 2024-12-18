@@ -11,6 +11,7 @@ import pages.LoginPage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -24,7 +25,7 @@ public class LoginTest {
     public void setup() throws IOException {
         // Load config.properties
         properties = new Properties();
-        FileInputStream configStream = new FileInputStream("src\\test\\java\\tests\\config.properties");
+        InputStream configStream = (InputStream) getClass().getClassLoader().getResourceAsStream("config.properties");
         properties.load(configStream);
 
         // Initialize WebDriver
