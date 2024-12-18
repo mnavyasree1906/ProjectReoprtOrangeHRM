@@ -28,4 +28,4 @@ jobs:
 
       - name: Run TestNG tests using testng.xml
         working-directory: ./OrangeHRM/orangehrm-test
-        run: mvn test -DsuiteXmlFile=testng.xml
+        run: mvn test -DsuiteXmlFile=src/test/resources/testng.xml
