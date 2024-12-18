@@ -35,3 +35,6 @@ jobs:
 
       - name: Display Surefire reports
         run: cat target/surefire-reports/*.txt
+      - name: Display Maven build output
+        run: mvn clean install -X
+
