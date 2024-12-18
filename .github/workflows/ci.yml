@@ -30,6 +30,8 @@ jobs:
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test -DsuiteXmlFile=src/test/resources/testng.xml
 
+      - name: List files in target directory
+        run: ls -la target
+
       - name: Display Surefire reports
         run: cat target/surefire-reports/*.txt
-
