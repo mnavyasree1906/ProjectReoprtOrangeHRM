@@ -45,8 +45,8 @@ jobs:
           libxcomposite1 \
           libxrandr2
   
-      - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@v1
+      # - name: Setup ChromeDriver
+      #   uses: nanasess/setup-chromedriver@v1
       #   with:
       #     version: 131.0.6778.139 
 
