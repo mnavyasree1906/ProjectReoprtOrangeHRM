@@ -20,7 +20,7 @@ jobs:
           java-version: '23'  # Specify your Java version
 
       - name: Build with Maven
-        working-directory: ProjectReoprtOrangeHRM/OrangeHRM/orangehrm-test
+        working-directory: ProjectReoprtOrangeHRM/OrangeHRM/orangehrm-test/pom.xml
         run: mvn clean install
       - name: Run Tests
         working-directory: ./OrangeHRM/orangehrm-test
