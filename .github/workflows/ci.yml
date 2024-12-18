@@ -30,8 +30,9 @@ jobs:
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test -DsuiteXmlFile=src/test/resources/testng.xml
       - name: Upload test reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: test-reports
-          path: target/surefire-reports/*.xml
+         name: test-reports
+         path: target/surefire-reports/*.xml
+
 
