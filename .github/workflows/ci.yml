@@ -29,10 +29,11 @@ jobs:
       - name: Run TestNG tests using testng.xml
         working-directory: ./OrangeHRM/orangehrm-test
         run: mvn test -DsuiteXmlFile=src/test/resources/testng.xml
-      - name: Upload test reports
-        uses: actions/upload-artifact@v3
-        with:
-         name: test-reports
-         path: target/surefire-reports/*.xml
 
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+            name: Report
+            path: test-results
+            retention-days: 2
 
