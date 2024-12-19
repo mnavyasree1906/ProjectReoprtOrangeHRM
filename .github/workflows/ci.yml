@@ -21,14 +21,13 @@ jobs:
 
       - name: Install Chrome
         run: |
-           sudo apt-get update
-           sudo apt-get install -y google-chrome-stable
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
 
-      - name: Install ChromeDriver
+      - name: Install Chromedriver
         run: |
-            sudo apt-get install -y chromium-chromedriver
-            sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-
+          sudo apt-get install -y chromium-chromedriver
+          sudo ln -sf /usr/bin/chromedriver /usr/local/bin/chromedriv
 
       - name: List files in the directory
         run: ls -la ./OrangeHRM/orangehrm-test
@@ -48,3 +47,7 @@ jobs:
             path: test-results
             retention-days: 2
 
+      - name: Verify Chrome and Chromedriver
+        run: |
+          google-chrome --version
+          chromedriver --version
