@@ -19,41 +19,44 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
+      - name: Install necessary tools
+        run: |
+          sudo apt-get install -y curl wget unzip
+
       - name: Install Chrome
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install -y ./google-chrome-stable_current_amd64.deb
-          google-chrome --version
+          sudo apt-get update || { echo "Update failed"; exit 1; }
+          sudo apt-get install -y wget unzip || { echo "Failed to install wget or unzip"; exit 1; }
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb || { echo "Failed to download Chrome"; exit 1; }
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb || { echo "Failed to install Chrome"; exit 1; }
+          google-chrome --version || { echo "Chrome installation failed"; exit 1; }
 
       - name: Install ChromeDriver
         run: |
           # Get the major version of Chrome
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
           echo "Detected Chrome major version: $CHROME_VERSION"
-
     
           # Get the matching ChromeDriver version
           DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
     
           if [ -z "$DRIVER_VERSION" ]; then
-           echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Using latest ChromeDriver."
-           DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Using latest ChromeDriver."
+            DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to fetch latest ChromeDriver"; exit 1; }
           fi
     
           if [ -z "$DRIVER_VERSION" ]; then
-          echo "Error: Unable to fetch ChromeDriver version. Exiting."
-          exit 1
+            echo "Error: Unable to fetch ChromeDriver version. Exiting."
+            exit 1
           fi
     
           echo "Using ChromeDriver version: $DRIVER_VERSION"
     
           # Download and install ChromeDriver
-           wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip
-             sudo mv chromedriver /usr/local/bin/chromedriver
-              chromedriver --version
+          wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
+          unzip chromedriver_linux64.zip || { echo "Failed to unzip ChromeDriver"; exit 1; }
+          sudo mv chromedriver /usr/local/bin/chromedriver || { echo "Failed to move ChromeDriver"; exit 1; }
+          chromedriver --version
 
       - name: List files in the directory
         run: ls -la ./OrangeHRM/orangehrm-test
