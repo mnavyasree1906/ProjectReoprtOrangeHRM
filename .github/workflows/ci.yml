@@ -51,3 +51,6 @@ jobs:
         run: |
           google-chrome --version
           chromedriver --version
+
+      - name: Run Tests
+        run: mvn test
