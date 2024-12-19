@@ -32,13 +32,17 @@ jobs:
           # Get the major version of Chrome
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
           echo "Detected Chrome major version: $CHROME_VERSION"
-          # Get the matching ChromeDriver version
-          DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+          
+          # Fetch the correct ChromeDriver version for the detected Chrome version
+          DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION || echo "")
+          
           if [ -z "$DRIVER_VERSION" ]; then
-            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Using latest ChromeDriver."
+            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Falling back to the latest stable ChromeDriver."
             DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
           fi
+          
           echo "Using ChromeDriver version: $DRIVER_VERSION"
+          
           # Download and install ChromeDriver
           wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
