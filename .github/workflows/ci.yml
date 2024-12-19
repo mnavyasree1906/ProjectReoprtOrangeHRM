@@ -37,16 +37,16 @@ jobs:
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
           echo "Detected Chrome major version: $CHROME_VERSION"
     
-          # Try to get the matching ChromeDriver version
+          # Attempt to get the matching ChromeDriver version
           DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-    
-          # If no matching driver found, use the latest available ChromeDriver
+
+          # If no matching driver is found, fall back to the latest available version
           if [ -z "$DRIVER_VERSION" ]; then
-            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Using latest ChromeDriver."
-            DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to fetch latest ChromeDriver"; exit 1; }
+            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Falling back to the latest ChromeDriver."
+            DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to fetch the latest ChromeDriver"; exit 1; }
           fi
     
-          # Check if DRIVER_VERSION was fetched successfully
+          # Check if DRIVER_VERSION is empty, which means the fetch failed
           if [ -z "$DRIVER_VERSION" ]; then
             echo "Error: Unable to fetch ChromeDriver version. Exiting."
             exit 1
@@ -54,7 +54,7 @@ jobs:
     
           echo "Using ChromeDriver version: $DRIVER_VERSION"
     
-          # Download and install ChromeDriver
+          # Download and install the correct ChromeDriver version
           wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
           unzip chromedriver_linux64.zip || { echo "Failed to unzip ChromeDriver"; exit 1; }
           sudo mv chromedriver /usr/local/bin/chromedriver || { echo "Failed to move ChromeDriver"; exit 1; }
