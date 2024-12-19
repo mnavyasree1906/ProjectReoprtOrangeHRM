@@ -11,6 +11,7 @@ import pages.LoginPage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -22,9 +23,16 @@ public class LoginTest {
 
     @BeforeClass
     public void setup() throws IOException {
-        // Load config.properties
+        // Load config.properties using class loader
         properties = new Properties();
-        FileInputStream configStream = new FileInputStream("src\\test\\java\\tests\\config.properties");
+        
+        // Use class loader to get the resource from the resources folder
+        InputStream configStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+
+        if (configStream == null) {
+            throw new IOException("config.properties file not found in resources");
+        }
+
         properties.load(configStream);
 
         // Initialize WebDriver
