@@ -17,17 +17,25 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '23'
+          java-version: '17'
 
       - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      - name: Install Chromedriver
+      - name: Install ChromeDriver
         run: |
-          sudo apt-get install -y chromium-chromedriver
-          sudo ln -sf /usr/bin/chromedriver /usr/local/bin/chromedriv
+          CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+" | head -1)
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*}")
+          wget -q "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip -d /usr/local/bin/
+          rm chromedriver_linux64.zip
+
+      - name: Verify Chrome and Chromedriver
+        run: |
+          google-chrome --version
+          chromedriver --version
 
       - name: List files in the directory
         run: ls -la ./OrangeHRM/orangehrm-test
@@ -43,14 +51,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-            name: Report
-            path: test-results
-            retention-days: 2
-
-      - name: Verify Chrome and Chromedriver
-        run: |
-          google-chrome --version
-          chromedriver --version
-
-      - name: Run Tests
-        run: mvn test
+          name: Report
+          path: test-results
+          retention-days: 2
