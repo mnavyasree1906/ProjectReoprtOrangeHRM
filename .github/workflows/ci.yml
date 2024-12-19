@@ -21,12 +21,11 @@ jobs:
 
       - name: Install necessary tools
         run: |
+          sudo apt-get update
           sudo apt-get install -y curl wget unzip
 
       - name: Install Chrome
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
           google-chrome --version
@@ -34,28 +33,30 @@ jobs:
       - name: Install ChromeDriver
         run: |
           # Get the major version of Chrome
-          CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d'.' -f1)
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
           echo "Detected Chrome version: $CHROME_VERSION"
-
-          # Try to get the matching ChromeDriver version for the detected Chrome version
+          
+          # Get the ChromeDriver version that corresponds to the major version of Chrome
           DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
 
-          # If no matching driver is found, fall back to the latest available version
+          # If the version is not found, fall back to the latest ChromeDriver
           if [ -z "$DRIVER_VERSION" ]; then
-            echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Falling back to the latest ChromeDriver."
+            echo "Unable to find ChromeDriver for Chrome version $CHROME_VERSION. Falling back to the latest version."
             DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
           fi
 
-          # Check if DRIVER_VERSION is still empty, meaning the fetch failed
+          # If still no version, exit with error
           if [ -z "$DRIVER_VERSION" ]; then
-            echo "Error: Unable to fetch ChromeDriver version. Exiting."
+            echo "Error: Could not determine a valid ChromeDriver version."
             exit 1
           fi
 
           echo "Using ChromeDriver version: $DRIVER_VERSION"
 
-          # Download the correct ChromeDriver version
+          # Download the ChromeDriver version
           wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
+
+          # Unzip the driver and move it to the appropriate directory
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/chromedriver
 
