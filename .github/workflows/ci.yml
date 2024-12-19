@@ -21,25 +21,25 @@ jobs:
 
       - name: Install necessary tools
         run: |
-          sudo apt-get install -y curl wget unzip
+          sudo apt-get update || { echo "Update failed"; exit 1; }
+          sudo apt-get install -y curl wget unzip || { echo "Failed to install necessary tools"; exit 1; }
 
       - name: Install Chrome
         run: |
-          sudo apt-get update || { echo "Update failed"; exit 1; }
-          sudo apt-get install -y wget unzip || { echo "Failed to install wget or unzip"; exit 1; }
+          # Install Google Chrome
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb || { echo "Failed to download Chrome"; exit 1; }
           sudo apt install -y ./google-chrome-stable_current_amd64.deb || { echo "Failed to install Chrome"; exit 1; }
-          google-chrome --version || { echo "Chrome installation failed"; exit 1; }
+          google-chrome-stable --version || { echo "Chrome installation failed"; exit 1; }
 
       - name: Install ChromeDriver
         run: |
           # Get the major version of Chrome
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
+          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+' | head -1)
           echo "Detected Chrome major version: $CHROME_VERSION"
     
           # Attempt to get the matching ChromeDriver version
           DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-
+    
           # If no matching driver is found, fall back to the latest available version
           if [ -z "$DRIVER_VERSION" ]; then
             echo "Unable to fetch ChromeDriver version for Chrome version $CHROME_VERSION. Falling back to the latest ChromeDriver."
